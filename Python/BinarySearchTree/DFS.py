@@ -41,16 +41,15 @@ class BinaryTree:
                 # Case node with value is found
                 if currentNode.value == value:
                    
-                    
                     #Check if has right node
                     if(currentNode.right):
-                        print(f"Setting first right node to {currentNode.right.value}")
+                        #print(f"Setting first right node to {currentNode.right.value}")
                         firstRightNode = currentNode.right
                         nodeToBePointed = firstRightNode
 
                         curLeftNode = firstRightNode.left
                         while curLeftNode != None:
-                            print(f"curLeftNode set to {curLeftNode.value}")
+                            #print(f"curLeftNode set to {curLeftNode.value}")
                             nodeToBePointed = curLeftNode
                             curLeftNode = curLeftNode.left
 
@@ -75,18 +74,31 @@ class BinaryTree:
                     elif currentNode.left:
                         if currentNode == self.root:
                             self.root = currentNode.left
-                            currentNode.right
+                        elif prevNode:
+                            if value < prevNode.value:
+                                prevNode.left = currentNode.left
+                            else:
+                                prevNode.right = currentNode.left
+                        break
+                    else:
+                        if prevNode:
+                            if value < prevNode.value:
+                                prevNode.left = None
+                            else:
+                                prevNode.right = None
+                        break
+
                 else:
                     if value < currentNode.value :
                         if currentNode.left:
-                            print(f"Setting previous node to {currentNode.value}")
+                            #print(f"Setting previous node to {currentNode.value}")
                             prevNode = currentNode
                             currentNode = currentNode.left
                         else:
                             currentNode = None
                     elif value > currentNode.value:
                         if currentNode.right:
-                            print(f"Setting previous node to {currentNode.value}")
+                            #print(f"Setting previous node to {currentNode.value}")
                             prevNode = currentNode
                             currentNode = currentNode.right
                         else:
@@ -131,8 +143,10 @@ class BinaryTree:
 
 if __name__ == "__main__":
     bst =  BinaryTree()
+    bst_root_only_left_child = BinaryTree()
 
-    bst.add(20).add(15).add(30).add(10).add(13).add(17).add(25).add(35)
+    bst.add(20).add(15).add(30).add(10).add(13).add(17).add(16).add(25).add(35)
+    bst_root_only_left_child.add(20).add(19)
     
     nodesVisited = []
 
@@ -148,16 +162,69 @@ if __name__ == "__main__":
     print(f"Nodes visited postorder manner {nodesVisited}")
 
     print("--Deletion section--")
-
+    
+    print("-Deleting to the right section")
     print("Deleting node 20")
     bst.delete(20)
     nodesVisited = []
     bst.preOrder(bst.root, nodesVisited)
-    print(f"Nodes after deletion of 20 {nodesVisited}")
+    print(f"Nodes after deletion of 20 preOrder  {nodesVisited}")
+    nodesVisited = []
+    bst.inOrder(bst.root, nodesVisited)
+    print(f"Nodes after deletion of 20 inOrder {nodesVisited}")
 
+    print("Deleting node 30")
+    bst.delete(30)
+    nodesVisited = []
+    bst.preOrder(bst.root, nodesVisited)
+    print(f"Nodes after deletion of 30 preOrder  {nodesVisited}")
+    nodesVisited = []
+    bst.inOrder(bst.root, nodesVisited)
+    print(f"Nodes after deletion of 30 inOrder {nodesVisited}")
+
+
+    print("-Deleting with no right child")
+    print("Deleting node 17")
+    bst.delete(17)
+    nodesVisited = []
+    bst.preOrder(bst.root, nodesVisited)
+    print(f"Nodes after deletion of 17 preOrder  {nodesVisited}")
+    nodesVisited = []
+    bst.inOrder(bst.root, nodesVisited)
+    print(f"Nodes after deletion of 17 inOrder {nodesVisited}")
 
     print("Deleting node 30")
     bst.delete(30)
     nodesVisited = []
     bst.preOrder(bst.root, nodesVisited)
     print(f"Nodes after deletion of 30 {nodesVisited}")
+
+
+    print("bst_root_only_left_child test cases: ")
+    nodesVisited = []
+    bst_root_only_left_child.preOrder(bst_root_only_left_child.root, nodesVisited)
+    print(f"Original tree = ${nodesVisited}")
+    print("Removing 20")
+    bst_root_only_left_child.delete(20)
+
+    nodesVisited = []
+    bst_root_only_left_child.preOrder(bst_root_only_left_child.root, nodesVisited)
+    print(f"Nodes after deletion preOrder {nodesVisited}")
+    nodesVisited = []
+    bst_root_only_left_child.inOrder(bst_root_only_left_child.root, nodesVisited)
+    print(f"Nodes after deletion inOrder {nodesVisited}")
+
+    print("bst_root_only_right_child test cases: ")
+    bst_root_only_right_child = BinaryTree()
+    bst_root_only_right_child.add(20).add(21)
+    nodesVisited = []
+    bst_root_only_right_child.preOrder(bst_root_only_right_child.root, nodesVisited)
+    print(f"Original tree = ${nodesVisited}")
+    print("Removing 20")
+    bst_root_only_right_child.delete(20)
+    nodesVisited = []
+    bst_root_only_right_child.preOrder(bst_root_only_right_child.root, nodesVisited)
+    print(f"Nodes after deletion preOrder {nodesVisited}")
+    nodesVisited = []
+    bst_root_only_right_child.inOrder(bst_root_only_right_child.root, nodesVisited)
+    print(f"Nodes after deletion inOrder {nodesVisited}")
